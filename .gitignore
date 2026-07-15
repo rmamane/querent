@@ -1,0 +1,32 @@
+# python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+dist/
+build/
+
+# env & credentials — zero-secrets discipline: this repo is PUBLIC.
+# Keys live only in the local shell env and per-instance vast.ai env vars.
+.env
+.env.*
+*.key
+*.pem
+.netrc
+netrc
+*_api_key*
+
+# data / runs / artifacts (never committed)
+data/
+ckpts/
+outputs/
+wandb/
+artifacts/
+results/
+*.ckpt
+*.pt
+
+# tooling
+.pytest_cache/
+.ruff_cache/
+.DS_Store

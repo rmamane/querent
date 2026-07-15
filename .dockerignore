@@ -1,0 +1,16 @@
+# The image is deps-only: it copies pyproject.toml + uv.lock and nothing else.
+# Everything below is excluded defensively so a stray COPY can never leak state.
+.git
+.venv
+__pycache__
+data
+ckpts
+outputs
+wandb
+artifacts
+results
+tests
+.env*
+*.key
+*.pem
+.netrc
