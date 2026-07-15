@@ -1,0 +1,21 @@
+# Fill before launching: image (Docker Hub) + repo_url (public GitHub).
+# git_sha: null -> launcher pins current HEAD.
+phase: p5
+project: querent
+image: docker.io/REPLACE_ME/querent-deps:cu128-t271-v1
+repo_url: https://github.com/REPLACE_ME/querent.git
+git_sha: null
+# conditional on P1-P4 signal
+cells:
+  - {experiment: p5/a0, seeds: [0, 1]}
+  - {experiment: p5/a0_depth13, seeds: [0, 1]}
+  - {experiment: p5/b3, seeds: [0, 1]}
+vast:
+  gpu_name: RTX_4090
+  num_gpus: 1
+  price_max: 0.45
+  disk: 64
+  reliability_min: 0.98
+  inet_down_min: 200
+  cuda_min: "12.4"
+env_passthrough: [WANDB_API_KEY]

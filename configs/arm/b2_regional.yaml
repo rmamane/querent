@@ -1,0 +1,7 @@
+# @package _global_
+# B2: pooled scene context residually steering per-token queries (raw K/V)
+arm:
+  name: b2_regional
+  attention:
+    name: regional
+    kwargs: {region_grid: [4, 4], summary: linear, ctx_dim: 64}

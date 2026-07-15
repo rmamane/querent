@@ -1,0 +1,7 @@
+# @package _global_
+# A4: TPA-Q in ViT (residual is OUR extension; replace = faithful TPA via override)
+arm:
+  name: a4_tpa
+  attention:
+    name: tpa
+    kwargs: {tpa_rank: 8, mode: residual, pos_bias: none}

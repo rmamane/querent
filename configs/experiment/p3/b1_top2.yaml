@@ -1,0 +1,11 @@
+# @package _global_
+defaults:
+  - override /arm: b1_bank
+  - _self_
+phase: p3
+arm:
+  name: b1_top2
+  attention:
+    kwargs: {route: topk, topk_k: 2, aux_load_balance: 0.01}
+recipe:
+  aux_loss_start_epoch: 10

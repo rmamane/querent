@@ -1,0 +1,5 @@
+# @package _global_
+defaults:
+  - override /arm: b1_bank
+  - _self_
+phase: p3

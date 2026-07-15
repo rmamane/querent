@@ -1,0 +1,5 @@
+# @package _global_
+defaults:
+  - override /arm: b2_regional
+  - _self_
+phase: p4

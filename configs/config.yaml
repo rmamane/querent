@@ -1,0 +1,61 @@
+# Root composition. Merge order matters: arm AFTER recipe (arms may pin
+# stability tweaks), experiment LAST (a phase cell can pin anything).
+defaults:
+  - data: cifar100
+  - model: vit_tiny_p4_32
+  - recipe: cifar_200ep
+  - arm: a0
+  - experiment: null
+  - _self_
+
+phase: dev
+seed: 0
+run_suffix: ""                       # bump to "-r2" to force a brand-new wandb run
+exp_name: ${phase}_${arm.name}_s${seed}
+run_id: ${exp_name}${run_suffix}     # doubles as the wandb run id (resume="allow")
+
+wandb:
+  project: querent
+  entity: null
+  group: ${phase}
+  job_type: ${arm.name}
+  mode: online                       # onstart flips to offline if the API is unreachable
+
+trainer:
+  accelerator: auto
+  devices: 1
+  precision: bf16-mixed              # env guard downgrades to 32-true on MPS
+  gradient_clip_val: 1.0
+  log_every_n_steps: 50
+  fast_dev_run: false
+
+compile:
+  enabled: false                     # per-arm opt-in after a bench sanity check
+  mode: default
+
+diagnostics:
+  harvest_every_steps: 100
+  probe_every_epochs: 10
+  probe_size: 512
+  probe_seed: 1234                   # independent of cfg.seed — identical probe images for every run
+  probe_chunk: 128
+
+eval:
+  consistency_every_epochs: 20
+  consistency_subset: 2048
+  corruptions_at_end: true
+
+ckpt:
+  dir: ${paths.ckpt_root}/${run_id}
+  periodic_every_epochs: 25
+  artifact_every_epochs: 25
+
+paths:
+  data_dir: ${oc.env:QUERENT_DATA_DIR,./data}
+  ckpt_root: ${oc.env:QUERENT_CKPT_ROOT,./ckpts}
+
+hydra:
+  run:
+    dir: outputs/${run_id}
+  job:
+    chdir: false                     # never chdir; paths are env-anchored

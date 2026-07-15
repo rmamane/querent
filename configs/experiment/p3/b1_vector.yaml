@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - override /arm: b1_bank
+  - _self_
+phase: p3
+arm:
+  name: b1_vector
+  attention:
+    kwargs: {payload: vector}

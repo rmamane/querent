@@ -1,0 +1,5 @@
+# @package _global_
+defaults:
+  - override /arm: a1
+  - _self_
+phase: p1

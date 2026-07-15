@@ -1,0 +1,9 @@
+# ViT-S/16 @ 224px: 14x14 grid, N=196 tokens (P6 phases)
+img_size: 224
+patch_size: 16
+num_classes: ${data.num_classes}
+dim: 384
+depth: 12
+num_heads: 6
+mlp_ratio: 4.0
+pos_emb: learned

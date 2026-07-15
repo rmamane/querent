@@ -1,0 +1,28 @@
+# From-scratch DeiT-style CIFAR recipe. Frozen on A0 in P0, then identical for
+# every arm — hyperparameter changes after P0 invalidate paired comparisons.
+epochs: 200
+batch_size: 512
+optimizer:
+  lr: 1.0e-3
+  weight_decay: 0.05
+  betas: [0.9, 0.999]
+  eps: 1.0e-8
+schedule:
+  warmup_epochs: 10
+  min_lr: 1.0e-5
+label_smoothing: 0.1
+mixup:
+  mixup_alpha: 0.8
+  cutmix_alpha: 1.0
+  prob: 1.0
+  switch_prob: 0.5
+  mode: batch
+randaug: rand-m9-mstd0.5-inc1     # timm config string (torchvision's is NOT DeiT-equivalent)
+random_erasing:
+  p: 0.25
+  mode: pixel                     # timm noise-fill, per DeiT
+drop_path_rate: 0.05
+ema:
+  enabled: false                  # off for screening; one more resume-state surface
+  decay: 0.9995
+aux_loss_start_epoch: 0           # routing aux losses delayed until alpha is live (B1 cells set >0)

@@ -1,0 +1,9 @@
+# @package _global_
+# Talking-heads control: static learned logit mixing (identity-init).
+# Runs the math attention path — compare accuracy, never wall-clock.
+arm:
+  name: a0_th
+  attention:
+    name: vanilla
+    kwargs:
+      talking_heads: true

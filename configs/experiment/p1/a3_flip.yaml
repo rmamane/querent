@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - override /arm: a3
+  - _self_
+phase: p1
+arm:
+  name: a3_flip
+  attention:
+    kwargs: {flip_tie: true}

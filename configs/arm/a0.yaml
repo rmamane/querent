@@ -1,0 +1,6 @@
+# @package _global_
+arm:
+  name: a0
+  attention:
+    name: vanilla
+    kwargs: {}

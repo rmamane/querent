@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - override /arm: a4_tpa
+  - _self_
+phase: p2
+arm:
+  name: a4_res_posbias
+  attention:
+    kwargs: {pos_bias: ab}

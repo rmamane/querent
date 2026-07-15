@@ -1,0 +1,7 @@
+# @package _global_
+# B3: nested-Q (Nexus-transfer study). Honest control = p5/a0_depth13.
+arm:
+  name: b3_nested
+  attention:
+    name: nested
+    kwargs: {inner_qk_norm: true}

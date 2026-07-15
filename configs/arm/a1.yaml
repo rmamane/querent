@@ -1,0 +1,7 @@
+# @package _global_
+# A1: content-gated low-rank query delta (ingredient 1: content)
+arm:
+  name: a1
+  attention:
+    name: gated_lowrank
+    kwargs: {gate_mode: content, rank: 8}

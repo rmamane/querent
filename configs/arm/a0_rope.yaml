@@ -1,0 +1,10 @@
+# @package _global_
+# 2D-RoPE control: pure relative positions (learned abs pos-emb disabled).
+arm:
+  name: a0_rope
+  attention:
+    name: vanilla
+    kwargs:
+      rope: true
+model:
+  pos_emb: none

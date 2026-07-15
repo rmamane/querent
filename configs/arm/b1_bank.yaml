@@ -1,0 +1,8 @@
+# @package _global_
+# B1 headline: routed metric bank. Defaults = softmax routing, rank-1 payloads,
+# M=16, no positional prior (prior/routing/granularity are P3 sweep axes).
+arm:
+  name: b1_bank
+  attention:
+    name: metric_bank
+    kwargs: {num_latents: 16, d_route: 64, route: softmax, payload: rank1, pos_prior: false}

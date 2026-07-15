@@ -1,0 +1,12 @@
+# @package _global_
+# 1-epoch local sanity run on the dev Mac: fp32, tiny subset, wandb offline.
+defaults:
+  - override /data: cifar100_smoke
+  - override /recipe: smoke
+  - _self_
+
+phase: smoke
+wandb:
+  mode: offline
+trainer:
+  precision: 32-true

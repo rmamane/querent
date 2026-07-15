@@ -1,0 +1,10 @@
+# @package _global_
+# Param-matched capacity control: fractional mlp_ratio.
+# delta_ratio = P_added_per_layer / (2 * dim^2); 5.5 matches ~3d^2/layer (B3-scale).
+arm:
+  name: a0_wide
+  attention:
+    name: vanilla
+    kwargs: {}
+model:
+  mlp_ratio: 5.5

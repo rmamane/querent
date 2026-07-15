@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - override /arm: b2_regional
+  - _self_
+phase: p4
+arm:
+  name: b2_mlp
+  attention:
+    kwargs: {summary: mlp}

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# Rendered per cell by scripts/launch_vast.py ({{VARS}} substituted).
+# IDEMPOTENT BY DESIGN: vast.ai re-executes onstart on every (re)start of an
+# interruptible instance — that re-execution IS the preemption-resume hook.
+# Secrets arrive ONLY via per-instance env (vastai create --env); nothing here.
+set -uo pipefail
+exec > >(tee -a /workspace/onstart.log) 2>&1
+
+echo "== querent onstart $(date -u +%FT%TZ) =="
+export WANDB_API_KEY="${WANDB_API_KEY:?set via vast --env}"
+export QUERENT_DATA_DIR=/workspace/data
+export QUERENT_CKPT_ROOT=/workspace/ckpts
+REPO_URL="{{REPO_URL}}"
+GIT_SHA="{{GIT_SHA}}"
+EXPERIMENT="{{EXPERIMENT}}"
+SEED="{{SEED}}"
+EXTRA="{{EXTRA}}"
+
+mkdir -p /workspace/data /workspace/ckpts /workspace/logs
+
+# 1. code at pinned SHA (guarded clone; public repo, plain https, no auth)
+if [ ! -d /workspace/querent/.git ]; then
+  git clone "$REPO_URL" /workspace/querent
+fi
+cd /workspace/querent
+git fetch -q origin
+git checkout -q "$GIT_SHA"
+uv pip install --python /opt/venv -e . --no-deps
+
+# 2. data cache (checksum/marker-guarded; ~170MB CIFAR + ~2.9GB CIFAR-100-C)
+python scripts/download_data.py --data-dir "$QUERENT_DATA_DIR" --with-c100c
+
+# 3. wandb reachability -> offline fallback with background sync loop
+if ! python -c "import wandb; wandb.Api(timeout=15).viewer" >/dev/null 2>&1; then
+  echo "wandb unreachable -> WANDB_MODE=offline (background sync loop armed)"
+  export WANDB_MODE=offline
+  ( while true; do sleep 300; wandb sync --sync-all /workspace/querent/wandb >/dev/null 2>&1 || true; done ) &
+fi
+
+# 4. training under a tmux session guard (ssh + `tmux attach -t train` to watch);
+#    resume resolution lives INSIDE train.py (finished-run guard -> local ckpt -> artifact)
+tmux has-session -t train 2>/dev/null || tmux new-session -d -s train \
+  "cd /workspace/querent && python train.py experiment=${EXPERIMENT} seed=${SEED} ${EXTRA} 2>&1 | tee -a /workspace/logs/train.log; \
+   echo \$? > /workspace/.exitcode; touch /workspace/.done; \
+   if [ \"\${AUTO_DESTROY:-0}\" = \"1\" ] && [ -n \"\${CONTAINER_ID:-}\" ] && [ -n \"\${VAST_API_KEY:-}\" ]; then \
+     vastai destroy instance \$CONTAINER_ID --api-key \$VAST_API_KEY; fi"
+
+echo "== onstart complete; training running in tmux session 'train' =="

@@ -1,0 +1,5 @@
+# @package _global_
+defaults:
+  - override /arm: a5_remix
+  - _self_
+phase: p2

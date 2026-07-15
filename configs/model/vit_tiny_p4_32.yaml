@@ -1,0 +1,9 @@
+# ViT-Ti/4 @ 32px: 8x8 grid, N=64 tokens
+img_size: 32
+patch_size: 4
+num_classes: ${data.num_classes}
+dim: 192
+depth: 12
+num_heads: 3
+mlp_ratio: 4.0
+pos_emb: learned
