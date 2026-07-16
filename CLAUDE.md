@@ -33,4 +33,9 @@ the approved plan; the operational summary is here.
 - `docker/` — deps-only image + idempotent vast.ai onstart template
 
 ## State (update as phases progress)
-- Phase: pre-P0 (building infra; nothing launched yet)
+- Phase: pre-P0. Code complete + all local gates green (145 tests; smoke +
+  overfit verified; diagnostics confirmed live on wandb project `querent`,
+  entity `raphaelma`). Published to github.com/rmamane/querent (public).
+  Image: docker.io/rmamane/querent-deps:cu128-t271-v1.
+- Next: cloud bring-up + preemption drill on vast.ai (USER GO REQUIRED — costs
+  money; ~$2–4), then P0 pilot → fleet (~$15, gated again).
