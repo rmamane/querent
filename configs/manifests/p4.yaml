@@ -14,9 +14,9 @@ cells:
   - {experiment: p4/b2_k, seeds: [0, 1]}
   - {experiment: p4/b2_qk, seeds: [0, 1]}
 vast:
-  gpu_name: RTX_4090
+  gpu_name: RTX_3090   # dense cheap-bid supply, low contention; 5090 = fastest but contested (see drill A/B)
   num_gpus: 1
-  price_max: 0.45
+  price_max: 0.15
   disk: 64
   reliability_min: 0.98
   inet_down_min: 200
