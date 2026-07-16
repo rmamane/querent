@@ -2,8 +2,8 @@
 # git_sha: null -> launcher pins current HEAD.
 phase: p3
 project: querent
-image: docker.io/REPLACE_ME/querent-deps:cu128-t271-v1
-repo_url: https://github.com/REPLACE_ME/querent.git
+image: docker.io/rmamane/querent-deps:cu128-t271-v1
+repo_url: https://github.com/rmamane/querent.git
 git_sha: null
 # shuffled-routing + frozen-gate controls added at P3 time (needs a control flag in metric_bank)
 cells:

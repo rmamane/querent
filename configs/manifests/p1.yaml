@@ -2,8 +2,8 @@
 # git_sha: null -> launcher pins current HEAD.
 phase: p1
 project: querent
-image: docker.io/REPLACE_ME/querent-deps:cu128-t271-v1
-repo_url: https://github.com/REPLACE_ME/querent.git
+image: docker.io/rmamane/querent-deps:cu128-t271-v1
+repo_url: https://github.com/rmamane/querent.git
 git_sha: null
 # apply_to q/k/qk cells added post-hoc on the P1 winner
 cells:

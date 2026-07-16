@@ -135,7 +135,8 @@ def main() -> None:
 
     for (experiment, seed, extra, rid), offer in zip(cells, offers):
         onstart = render_onstart(m, experiment, seed, extra)
-        bid = round(min(m["vast"]["price_max"], float(offer.get("min_bid", m["vast"]["price_max"])) * 1.15), 3)
+        min_bid = float(offer.get("min_bid", m["vast"]["price_max"]))
+        bid = round(min(m["vast"]["price_max"], min_bid * 1.15), 3)
         with tempfile.NamedTemporaryFile("w", suffix=".sh", delete=False) as f:
             f.write(onstart)
             onstart_path = f.name
