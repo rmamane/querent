@@ -22,6 +22,7 @@ import argparse
 import fnmatch
 import json
 import os
+import re
 import shlex
 import subprocess
 import sys
@@ -33,8 +34,20 @@ import yaml
 REPO = Path(__file__).resolve().parents[1]
 
 
+def _redact(s: str) -> str:
+    return re.sub(r"(WANDB_API_KEY|VAST_API_KEY)=\S+", r"\1=***", s or "")
+
+
 def sh(cmd: list[str]) -> str:
-    return subprocess.run(cmd, check=True, capture_output=True, text=True).stdout
+    # Never check=True with raw argv: CalledProcessError reprs the full command,
+    # which leaks --env secrets into logs. Redact everything on the error path.
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        raise RuntimeError(
+            f"command failed ({r.returncode}): {_redact(shlex.join(cmd))}\n"
+            f"stderr: {_redact(r.stderr.strip())}\nstdout: {_redact(r.stdout.strip())}"
+        )
+    return r.stdout
 
 
 def resolve_run_id(experiment: str, seed: int) -> str:
@@ -146,7 +159,7 @@ def main() -> None:
             "--disk", str(m["vast"]["disk"]),
             "--onstart", onstart_path,
             "--env", env_str,
-            "--price", str(bid),
+            "--bid_price", str(bid),  # interruptible instance at this bid
             "--label", rid,
         ]
         if args.dry_run:
