@@ -22,10 +22,28 @@ ZENODO_RECORD = "https://zenodo.org/api/records/3555552"
 TAR_NAME = "CIFAR-100-C.tar"
 
 
+# Fast mirror (GitHub release CDN) — the canonical cs.toronto.edu server serves
+# at ~74 kB/s (40 min per box). torchvision still verifies the tarball md5.
+CIFAR_MIRROR = "https://github.com/rmamane/querent/releases/download/data-mirror/cifar-100-python.tar.gz"
+
+
 def fetch_cifar100(data_dir: Path) -> None:
     from torchvision.datasets import CIFAR100
 
-    CIFAR100(str(data_dir), train=True, download=True)
+    tar = data_dir / "cifar-100-python.tar.gz"
+    if not tar.exists() and not (data_dir / "cifar-100-python").exists():
+        try:
+            data_dir.mkdir(parents=True, exist_ok=True)
+            print("fetching CIFAR-100 from repo mirror…")
+            with requests.get(CIFAR_MIRROR, stream=True, timeout=60) as r:
+                r.raise_for_status()
+                with open(tar, "wb") as f:
+                    for chunk in r.iter_content(chunk_size=1 << 22):
+                        f.write(chunk)
+        except Exception as e:  # fall back to the canonical (slow) source
+            print(f"mirror failed ({type(e).__name__}) — falling back to torchvision download")
+            tar.unlink(missing_ok=True)
+    CIFAR100(str(data_dir), train=True, download=True)  # verifies md5, extracts
     CIFAR100(str(data_dir), train=False, download=True)
     print(f"CIFAR-100 ready in {data_dir}")
 

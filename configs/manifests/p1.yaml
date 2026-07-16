@@ -20,5 +20,5 @@ vast:
   disk: 64
   reliability_min: 0.98
   inet_down_min: 200
-  cuda_min: "12.4"
+  cuda_min: "12.8"   # cu128 container needs >=12.8 host driver (GeForce has no fwd-compat; error 804)
 env_passthrough: [WANDB_API_KEY]
