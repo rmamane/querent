@@ -1,0 +1,5 @@
+name: cifar100
+num_classes: 100
+img_size: 32
+num_workers: 8
+subset_fraction: 1.0

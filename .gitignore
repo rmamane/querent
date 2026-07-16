@@ -16,13 +16,16 @@ build/
 netrc
 *_api_key*
 
-# data / runs / artifacts (never committed)
-data/
-ckpts/
-outputs/
-wandb/
-artifacts/
-results/
+# data / runs / artifacts (never committed).
+# ROOT-ANCHORED on purpose: an unanchored `data/` also ignores src/querent/data/
+# — this silently dropped the whole data package from the repo once (found when
+# the first cloud clone crashed on import). tests/test_repo_hygiene.py guards this.
+/data/
+/ckpts/
+/outputs/
+/wandb/
+/artifacts/
+/results/
 *.ckpt
 *.pt
 
