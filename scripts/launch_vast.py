@@ -77,7 +77,8 @@ def search_offers(v: dict, n: int) -> list[dict]:
         f"disk_space>{v['disk']} dph_total<{v['price_max']} cuda_vers>={v['cuda_min']} "
         f"rentable=true"
     )
-    raw = sh(["vastai", "search", "offers", q, "--type", "bid", "-o", "dph_total", "--raw"])
+    offer_type = v.get("type", "bid")
+    raw = sh(["vastai", "search", "offers", q, "--type", offer_type, "-o", "dph_total", "--raw"])
     offers = json.loads(raw)
     return offers[: n * 2]  # headroom for failed creates
 
@@ -102,6 +103,12 @@ def main() -> None:
     ap.add_argument("--skip-existing", action="store_true")
     ap.add_argument("--only", default=None, help="glob on run_id, e.g. 'p3_b1*'")
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--on-demand", action="store_true",
+                    help="rent at ask price (no bid preemption) instead of interruptible")
+    ap.add_argument("--disk", type=int, default=None,
+                    help="override manifest disk GB (e.g. 32 for a lean drill box)")
+    ap.add_argument("--price-max", type=float, default=None,
+                    help="override manifest price ceiling (on-demand asks run higher)")
     ap.add_argument("--ls", action="store_true", help="list current vast instances and exit")
     args = ap.parse_args()
 
@@ -112,6 +119,11 @@ def main() -> None:
     m = yaml.safe_load(Path(args.manifest).read_text())
     if not m.get("git_sha"):
         m["git_sha"] = sh(["git", "-C", str(REPO), "rev-parse", "HEAD"]).strip()
+    if args.disk:
+        m["vast"]["disk"] = args.disk
+    if args.price_max:
+        m["vast"]["price_max"] = args.price_max
+    m["vast"]["type"] = "on-demand" if args.on_demand else "bid"
 
     if "REPLACE_ME" in (m.get("image", "") + m.get("repo_url", "")):
         sys.exit("manifest still has REPLACE_ME placeholders (image/repo_url) — fill them in first")
@@ -146,6 +158,7 @@ def main() -> None:
         env_parts = [f"-e {k}=***" for k in m.get("env_passthrough", ["WANDB_API_KEY"])]
     env_str = " ".join(env_parts)
 
+    on_demand = m["vast"].get("type") == "on-demand"
     for (experiment, seed, extra, rid), offer in zip(cells, offers):
         onstart = render_onstart(m, experiment, seed, extra)
         min_bid = float(offer.get("min_bid", m["vast"]["price_max"]))
@@ -159,14 +172,17 @@ def main() -> None:
             "--disk", str(m["vast"]["disk"]),
             "--onstart", onstart_path,
             "--env", env_str,
-            "--bid_price", str(bid),  # interruptible instance at this bid
             "--label", rid,
         ]
+        if not on_demand:
+            cmd += ["--bid_price", str(bid)]  # interruptible; omit -> on-demand at ask
+        price_note = f"ask ${offer['dph_total']:.3f} on-demand" if on_demand \
+            else f"${offer['dph_total']:.3f}/h ask, bid ${bid}"
         if args.dry_run:
-            print(f"\n# {rid}  (offer {offer['id']}, ${offer['dph_total']:.3f}/h ask, bid ${bid})")
+            print(f"\n# {rid}  (offer {offer['id']}, {price_note})")
             print(shlex.join(cmd))
         else:
-            print(f"launching {rid} on offer {offer['id']} (bid ${bid}) …")
+            print(f"launching {rid} on offer {offer['id']} ({price_note}) …")
             print(sh(cmd).strip())
 
     if args.dry_run and cells:
