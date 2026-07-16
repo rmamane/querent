@@ -1,7 +1,7 @@
 # Fill before launching: image (Docker Hub) + repo_url (public GitHub).
 # git_sha: null -> launcher pins current HEAD.
 phase: p2
-project: querent
+project: querent-attn
 image: docker.io/rmamane/querent-deps:cu128-t271-v1
 repo_url: https://github.com/rmamane/querent.git
 git_sha: null

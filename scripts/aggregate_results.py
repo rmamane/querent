@@ -36,7 +36,7 @@ def main() -> None:
     ap.add_argument("--phase", required=True)
     ap.add_argument("--baseline", default="a0")
     ap.add_argument("--entity", default=None)
-    ap.add_argument("--project", default="querent")
+    ap.add_argument("--project", default="querent-attn")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 

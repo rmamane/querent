@@ -34,8 +34,11 @@ the approved plan; the operational summary is here.
 
 ## State (update as phases progress)
 - Phase: pre-P0. Code complete + all local gates green (145 tests; smoke +
-  overfit verified; diagnostics confirmed live on wandb project `querent`,
-  entity `raphaelma`). Published to github.com/rmamane/querent (public).
+  overfit verified). Published to github.com/rmamane/querent (public).
   Image: docker.io/rmamane/querent-deps:cu128-t271-v1.
+- wandb: entity `raphaelma`; TRAINING project is `querent-attn` (auto-created
+  on first run); the old `querent` project is the smoke/dev sandbox only.
+- Fleet GPU: RTX_3090 @ $0.15 ceiling for screening (dense cheap-bid supply,
+  low contention); re-run the market analysis before P6.
 - Next: cloud bring-up + preemption drill on vast.ai (USER GO REQUIRED — costs
   money; ~$2–4), then P0 pilot → fleet (~$15, gated again).

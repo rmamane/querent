@@ -65,7 +65,7 @@ def main() -> None:
     if args.log_wandb_phase:
         import wandb
 
-        run = wandb.init(project="querent", group=args.log_wandb_phase,
+        run = wandb.init(project="querent-attn", group=args.log_wandb_phase,
                          job_type="bench", name=f"bench_{args.log_wandb_phase}")
         run.log({f"{arm}/{k}": v for arm, r in results.items() for k, v in r.items()})
         run.finish()

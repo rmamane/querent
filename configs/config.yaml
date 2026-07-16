@@ -16,7 +16,7 @@ exp_name: ${phase}_${arm.name}_s${seed}
 run_id: ${exp_name}${run_suffix}     # doubles as the wandb run id (resume="allow")
 
 wandb:
-  project: querent
+  project: querent-attn
   entity: null
   group: ${phase}
   job_type: ${arm.name}
