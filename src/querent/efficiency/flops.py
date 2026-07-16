@@ -17,11 +17,13 @@ from torch.utils.flop_counter import FlopCounterMode
 
 
 def count_flops(net: nn.Module, img_size: int) -> dict[str, float]:
-    net = net.eval()
+    was_training = net.training
+    net.eval()
     x = torch.randn(1, 3, img_size, img_size)
     with FlopCounterMode(display=False) as fcm:
         with torch.no_grad():
             net(x)
+    net.train(was_training)  # never leave the net in eval mode behind our back
     total = float(fcm.get_total_flops())
     return {"eff/gflops_fwd": total / 1e9, "eff/gmacs_fwd": total / 2e9}
 

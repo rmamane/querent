@@ -1,12 +1,13 @@
 # Root composition. Merge order matters: arm AFTER recipe (arms may pin
-# stability tweaks), experiment LAST (a phase cell can pin anything).
+# stability tweaks), root _self_ BEFORE experiment so a phase cell's raw keys
+# (phase, wandb.mode, trainer.precision, …) can pin anything — experiment LAST.
 defaults:
   - data: cifar100
   - model: vit_tiny_p4_32
   - recipe: cifar_200ep
   - arm: a0
-  - experiment: null
   - _self_
+  - experiment: null
 
 phase: dev
 seed: 0

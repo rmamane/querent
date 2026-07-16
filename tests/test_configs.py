@@ -48,6 +48,23 @@ def test_experiment_composes_and_instantiates(exp):
     assert net is not None
 
 
+@pytest.mark.parametrize("exp", EXPERIMENTS)
+def test_experiment_raw_keys_win(exp):
+    """Regression: root _self_ must merge BEFORE experiment, so an experiment's
+    raw keys (phase, wandb.mode, …) beat root defaults. Caught live: smoke ran
+    as phase=dev, online, because _self_ was last."""
+    cfg = _compose([f"experiment={exp}"])
+    expected_phase = exp.split("/")[0] if "/" in exp else exp.split("_")[0]
+    assert str(cfg.phase) == expected_phase, f"{exp}: phase={cfg.phase}, expected {expected_phase}"
+
+
+def test_smoke_local_pins_offline_and_fp32():
+    cfg = _compose(["experiment=smoke_local"])
+    assert str(cfg.wandb.mode) == "offline"
+    assert str(cfg.trainer.precision) == "32-true"
+    assert str(cfg.phase) == "smoke"
+
+
 def test_run_id_yaml_python_consistency():
     cfg = _compose(["arm=a0", "seed=3", "phase=p1"])
     assert str(cfg.run_id) == run_id("p1", "a0", 3)
