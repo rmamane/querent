@@ -77,6 +77,8 @@ def search_offers(v: dict, n: int) -> list[dict]:
         f"disk_space>{v['disk']} dph_total<{v['price_max']} cuda_vers>={v['cuda_min']} "
         f"rentable=true"
     )
+    if v.get("verified"):
+        q += " verified=true"
     offer_type = v.get("type", "bid")
     raw = sh(["vastai", "search", "offers", q, "--type", offer_type, "-o", "dph_total", "--raw"])
     offers = json.loads(raw)

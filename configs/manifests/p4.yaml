@@ -18,7 +18,8 @@ vast:
   num_gpus: 1
   price_max: 0.15
   disk: 64
-  reliability_min: 0.98
+  reliability_min: 0.99
+  verified: true      # datacenter-vetted hosts only (wedged-pull/vanishing-host mitigations)
   inet_down_min: 200
   cuda_min: "12.8"   # cu128 container needs >=12.8 host driver (GeForce has no fwd-compat; error 804)
 env_passthrough: [WANDB_API_KEY]
