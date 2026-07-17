@@ -1,0 +1,2 @@
+arm,seeds_done,seeds_total,top1_mean,top1_std,d_mean_pp,d_min_pp,agree2,d4_pp,flip_agree,mCA,params_M,gflops,thpt_ratio,WARN,GATE
+a0,1,1,0.6140000224113464,,0.0,0.0,0.768650010228157,-1.9850000739097595,0.9286999702453612,0.498508,5.384356,0.680695296,,,
