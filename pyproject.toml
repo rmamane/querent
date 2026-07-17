@@ -21,6 +21,7 @@ dependencies = [
     "requests",
     "tqdm",
     "rich",
+    "tabulate>=0.10.0",
 ]
 
 [dependency-groups]

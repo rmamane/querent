@@ -33,3 +33,6 @@ netrc
 .pytest_cache/
 .ruff_cache/
 .DS_Store
+
+# runner log stays local (committed reports: md + queue ledger only)
+/reports/runner.log
