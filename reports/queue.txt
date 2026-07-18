@@ -8,6 +8,9 @@ p1/a2
 p1/a3
 p3/b1
 p3/b1_prior
+# b1_sigmoid pulled forward: arbitrates the competition-vs-init-scale question
+# raised by b1_bank's refusal (alpha readout is noise-immune, no seed needed)
+p3/b1_sigmoid
 p2/a4_res
 p2/a5
 p4/b2
