@@ -4,6 +4,28 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## P1 wrap — decomposition trio done: content carries it; position is a minor modifier
+
+**`a3` (content+position): 61.86% (+0.46 pp)** — statistically indistinguishable
+from a1 (+0.21) and a2's dead-arm +0.52 at one seed; all three sit inside the
+noise band. The mechanism evidence, which is noise-immune, is consistent:
+
+- **Depth-selective adoption**: α opened at L0 (|α| 0.23, delta ratio **8.1%**
+  — the strongest engagement measured anywhere) and L11 (0.23, 2.6%), but the
+  middle of the network opted out (L5: α 0.016, ratio ≈ 0). The first layer
+  wants content-adapted queries most — consistent with early layers doing
+  texture/local binding where per-token metrics plausibly help.
+- **Content still dominates the gates where adopted**: content std 0.33 vs
+  positional std 0.09 at L0 (≈3.6:1). The b-term contributes *some* positional
+  structure beyond a1's incidental 0.054, but it's a modifier, not a driver.
+
+**P1 provisional verdict** (pending seed-1 pairs): query adaptivity, where the
+optimizer wants it at all, comes from *content*; static position-indexed maps
+are refused alone (a2) and secondary in combination (a3). The fixed-N
+positional hook now rides on B1's routing *prior* (b1_prior vs b1) — exactly
+the contrast the headline arm was designed to isolate. Accuracy separation, if
+any, needs the 2-seed pairs queued after breadth.
+
 ## P1 — a2's paradox: best score, dead mechanism → the noise floor is ~±0.5pp
 
 **`a2` (position-only gating, ingredient 2): 61.92% → +0.52 pp — nominally the
