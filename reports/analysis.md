@@ -34,6 +34,12 @@ positional prior inside a mechanism whose output is unused — expect another
 dead cell (α pinned, prior irrelevant). If it somehow gets adopted, that's a
 positional-bootstrap effect worth chasing.
 
+> **Outcome — prediction confirmed** (`mps_b1_prior_s0`): α 0.014, routing
+> entropy 2.772 (uniform), MI 1.4e-5, delta ratio 1e-5; top-1 61.91% — a third
+> independent draw inside the ±0.5 pp noise band around baseline. The prior
+> question stays open only in whatever form survives `b1_sigmoid`
+> (now running — the competition-vs-scale arbiter).
+
 ## P1 wrap — decomposition trio done: content carries it; position is a minor modifier
 
 **`a3` (content+position): 61.86% (+0.46 pp)** — statistically indistinguishable
