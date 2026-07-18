@@ -4,6 +4,36 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## P3 opener — the headline metric bank was refused; competition-vs-composition sharpens
+
+**`b1_bank` (softmax routing over 16 rank-1 metric bases, residual): 61.70%
+(+0.30 pp — inside noise) and the mechanism is DEAD**: α pinned at
+0.013–0.032, delta ratio ≈ 10⁻⁴, routing entropy 2.770–2.772 vs log 16 = 2.773
+(uniform), load_max 0.063 ≈ 1/16, position↔latent MI ≈ 0. Perfect load balance
+because nothing is being routed at all.
+
+The contrast that makes this interesting rather than merely disappointing:
+**A1 — sigmoid gates over shared low-rank bases, nearly the same expressive
+family — was adopted (α→0.22); B1's softmax-routed version was refused.**
+Two candidate explanations, and the queued grid already separates them:
+
+1. **Competition hypothesis**: softmax couples the bases (raising one gate
+   lowers the rest), slowing symmetry-breaking; independent sigmoid gates
+   break symmetry channel-by-channel. This is exactly the SwitchHead-imported
+   axis the plan flagged.
+2. **Init-scale hypothesis**: near-uniform softmax averages 16 random rank-1
+   responses (∝1/M each), so the init delta is ~4× weaker than A1's, and the
+   α-gradient with it.
+
+`b1_sigmoid` (queued) divides its sigmoid gates by M — SAME small init scale,
+but non-competitive. If it's adopted → competition story; if it also stalls →
+scale story (and a one-line init fix becomes the follow-up).
+
+**Prediction registered before the fact**: `b1_prior` (running now) adds the
+positional prior inside a mechanism whose output is unused — expect another
+dead cell (α pinned, prior irrelevant). If it somehow gets adopted, that's a
+positional-bootstrap effect worth chasing.
+
 ## P1 wrap — decomposition trio done: content carries it; position is a minor modifier
 
 **`a3` (content+position): 61.86% (+0.46 pp)** — statistically indistinguishable
