@@ -4,6 +4,16 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## P4 opener — b2 regional: depth-graded adoption, accuracy at the noise edge
+
+**`b2_regional`: 61.84% (+0.44, edge of noise), mCA 50.23.** Third distinct
+adoption pattern: engagement is front-loaded and decays with depth (delta
+ratio 0.42 → 0.11 → 0.04 at L0/L5/L11; α 0.06/0.02/0.02) — pooled scene
+context steers queries in early layers and is ignored late. Every adopted
+mechanism so far (A1/A3, A5, TPA, B2) engages L0 hardest; whatever query
+adaptivity is worth, the first layer wants it most. Ablation cells
+(b2_replace/b2_k/b2_qk/b2_r4) remain queued behind higher-information cells.
+
 ## P2 — a5 head-remix: first clear-signal cell (+1.17 pp) from the cheapest arm
 
 **`a5_remix` (content-dependent query-space head mixing): 62.57% — +1.17 pp,
