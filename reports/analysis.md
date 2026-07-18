@@ -4,6 +4,26 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## P2 — TPA-residual: the strongest adoption yet, and it completes the init-scale curve
+
+**`a4_res` (TPA query factorization, residual): 62.02% (+0.62 pp, best nominal
+score; edge of the noise band) and mCA 50.87% (+1.0 pp, best robustness).**
+The mechanism was embraced wholesale: α 0.27/0.42/0.75 (L0/L5/L11 — even the
+middle layers that refused A3), delta ratio 0.87/0.77/**1.28** — at the last
+layer the generated query is *larger* than the static one. TPA didn't
+modulate the projection; it substantially replaced it.
+
+**The emerging law**: TPA's generator is the one arm whose init delta matches
+the base query's magnitude (its init was scale-derived on purpose), and
+adoption now correlates cleanly with init delta scale across every cell run so
+far — ~100% init ratio → α 0.75 (a4_res); ~3% → α 0.22 (a1/a3); ~0.03% → dead
+(b1 family, a2). Same optimizer, same recipe, same α=0 start. `b1_gain4`
+(queued) is the *interventional* test of exactly this curve.
+
+Caveat for the eventual writeup: adoption ≠ accuracy (a4's +0.62 still needs
+its seed pair), and TPA pays +22% attention MACs — the param-matched
+comparison is mandatory before any claim.
+
 ## P3 arbiter — competition exonerated; it's the init scale. Fix implemented, prediction registered.
 
 **`b1_sigmoid`: 61.74% (noise band), mechanism DEAD** — α 0.010–0.017, delta
