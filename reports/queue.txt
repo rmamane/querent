@@ -20,6 +20,9 @@ p4/b2
 p4/b2_replace
 p5/a0_depth13
 p5/b3
+# b1_m4 promoted: gain4 refused at matched scale -> per-payload gradient
+# dilution (1/M) is the surviving hypothesis; M=4 is the direct test
+p3/b1_m4
 p0/a0_rope
 # --- seed-1 pairs pulled forward: a functionally-dead a2 scored +0.52pp, so the
 # --- single-seed noise floor is ~±0.5pp and 1-seed deltas are uninterpretable.
@@ -42,7 +45,6 @@ p3/b1_replace
 p2/a4_replace
 p0/a0_wide
 # --- postponed tail (cut if time runs out)
-p3/b1_m4
 p3/b1_m64
 p3/b1_headlr
 p2/a4_res_posbias

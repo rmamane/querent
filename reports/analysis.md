@@ -4,6 +4,26 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## Interventional verdict — the bank refuses even at matched init scale; hypothesis corrected
+
+**`b1_gain4` (registered test): DEAD.** α 0.005–0.04, routing entropy 2.772
+(uniform), MI ≈ 0, delta ratio ~1e-4, top-1 61.72% (noise band). The 4× gain
+put its starting delta at parity with adopted A1 — and the optimizer still
+refused it.
+
+**Correction to the earlier "competition exonerated, it's the scale" claim** —
+the full 2×2 now reads: sigmoid @ small scale dead, softmax @ small scale
+dead, softmax @ matched scale dead, A1's element-wise gates @ matched scale
+ADOPTED. Neither routing-nonlinearity alone nor scale alone explains the
+split. **Surviving hypothesis: per-payload gradient dilution** — the bank
+fragments its learning signal across M=16 independent metrics (each sees
+~1/16 of the gradient A1's single shared basis pair concentrates), and no
+individual metric crystallizes before the α-window closes.
+**Registered prediction**: `b1_m4` (M=4, promoted in queue) ignites partially
+or fully (α > 0.1) if dilution is the story; if it's dead too, the honest
+conclusion is that the routed-bank *form* is disfavored at ViT-Ti scale, full
+stop, and the negative result + adoption law + head-remix carry the paper.
+
 ## P4 opener — b2 regional: depth-graded adoption, accuracy at the noise edge
 
 **`b2_regional`: 61.84% (+0.44, edge of noise), mCA 50.23.** Third distinct
