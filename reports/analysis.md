@@ -4,6 +4,30 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## P2 — a5 head-remix: first clear-signal cell (+1.17 pp) from the cheapest arm
+
+**`a5_remix` (content-dependent query-space head mixing): 62.57% — +1.17 pp,
+the first delta to clear the ±0.5 pp noise floor decisively (2.3×).** mCA
+50.87% (ties a4_res for best). Mechanism: adopted uniformly at every depth
+(α 0.24–0.33, delta ratio 0.16–0.20 — including the middle layers that
+refused A3), at near-zero cost: h² = 9 mixing logits per token, ~1.7 K
+params/layer, +0.5% attention MACs.
+
+Law check: A5's init delta is the softmax-uniform head-mean of the per-head
+queries (init ratio ≈ 0.5) — the adoption law predicted uptake between A1 (3%)
+and TPA (100%), and α landed exactly there. Three interpolation points plus
+two dead clusters now on the curve; `b1_gain4` is the interventional test.
+
+Standing caveat: single seed. `a5 seed=1` and `a4_res seed=1` promoted into
+the seed-pair block (replacing pairs for the two dead B1 cells — deadness has
+already replicated within the family). If a5's pair holds anywhere near
++1 pp, the P6 promotion story starts with the humblest mechanism in the grid.
+
+*Ops note*: the first `b1_gain4` attempt crashed instantly — Hydra struct mode
+requires `+arm.attention.kwargs.init_gain=4.0` for a key not in the arm
+config; queue line fixed (runner correctly skipped past the failure, cost: 6
+seconds).
+
 ## P2 — TPA-residual: the strongest adoption yet, and it completes the init-scale curve
 
 **`a4_res` (TPA query factorization, residual): 62.02% (+0.62 pp, best nominal

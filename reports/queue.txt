@@ -15,7 +15,7 @@ p2/a4_res
 p2/a5
 # b1 with init_gain=4 (=sqrt(M)): tests the init-scale explanation for the
 # bank's refusal — payload init now matches A1's adopted delta magnitude
-p3/b1 arm.name=b1_gain4 arm.attention.kwargs.init_gain=4.0
+p3/b1 arm.name=b1_gain4 +arm.attention.kwargs.init_gain=4.0
 p4/b2
 p4/b2_replace
 p5/a0_depth13
@@ -27,8 +27,8 @@ p0/a0 seed=1
 p1/a1 seed=1
 p1/a2 seed=1
 p1/a3 seed=1
-p3/b1 seed=1
-p3/b1_prior seed=1
+p2/a4_res seed=1
+p2/a5 seed=1
 # --- depth cells (single seed; interpret only if |delta| clears the noise floor)
 p3/b1_sigmoid
 p3/b1_top2
