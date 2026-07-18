@@ -4,6 +4,37 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## P1 — a2's paradox: best score, dead mechanism → the noise floor is ~±0.5pp
+
+**`a2` (position-only gating, ingredient 2): 61.92% → +0.52 pp — nominally the
+best cell and above the promote bar. Do not believe it.** The diagnostics show
+the mechanism never turned on:
+
+- α stayed pinned: |α|max 0.005–0.02 across layers (vs a1's 0.22) — the
+  optimizer *refused* the delta.
+- delta ratio ≈ 0.0003 (0.03% of the base query) — functionally OFF.
+- The positional table barely moved: gates_mean ≈ 0.494 ≈ σ(0), positional
+  spread 0.002–0.007 (a1's content spread was 0.234 for comparison).
+
+A functionally-dead arm is accuracy-equivalent to the baseline, so its
++0.52 pp IS a clean estimate of run-to-run noise in this regime (arms consume
+different init RNG, so paired seeds align data order but not weights).
+**Consequences, applied to the program immediately:**
+
+1. **Single-seed deltas below ~±0.5–0.7 pp are uninterpretable**; the +0.4 pp
+   promote gate only means something with ≥2 seeds (as the original plan
+   specified). The auto-table's GATE column at seeds=1 is decorative — noted
+   here so nobody reads a2's row as a promotion.
+2. **Queue reshuffled**: seed-1 repeats of {a0, a1, a2, a3, b1, b1_prior}
+   pulled forward, ahead of the depth grid; deep-tail cells postponed.
+3. **The α-adoption asymmetry is the real P1 finding so far**, and it's
+   noise-immune (α starts at exactly 0 by construction — any growth is an
+   optimizer choice): content-gating was *adopted* (α→0.22, gates
+   content-differentiated), static positional gating was *refused* (α≈0,
+   table undifferentiated). Ingredient 2 alone gets no uptake at this scale;
+   the fixed-N hook's remaining hopes are A3's combination (running) and B1's
+   positional routing prior.
+
 ## P1 — decomposition, first contrast (a1 done; a2 running)
 
 **Baseline `a0`: 61.40%** top-1 best (100 ep). Sanity checks out: mCA 49.9%,

@@ -15,6 +15,15 @@ p4/b2_replace
 p5/a0_depth13
 p5/b3
 p0/a0_rope
+# --- seed-1 pairs pulled forward: a functionally-dead a2 scored +0.52pp, so the
+# --- single-seed noise floor is ~±0.5pp and 1-seed deltas are uninterpretable.
+p0/a0 seed=1
+p1/a1 seed=1
+p1/a2 seed=1
+p1/a3 seed=1
+p3/b1 seed=1
+p3/b1_prior seed=1
+# --- depth cells (single seed; interpret only if |delta| clears the noise floor)
 p3/b1_sigmoid
 p3/b1_top2
 p3/b1_vector
@@ -23,12 +32,13 @@ p1/a3_flip
 p4/b2_r4
 p4/b2_k
 p4/b2_qk
+p3/b1_replace
+p2/a4_replace
+p0/a0_wide
+# --- postponed tail (cut if time runs out)
 p3/b1_m4
 p3/b1_m64
 p3/b1_headlr
-p3/b1_replace
-p2/a4_replace
 p2/a4_res_posbias
-p0/a0_wide
 p0/a0_th
 p4/b2_mlp
