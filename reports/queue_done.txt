@@ -8,3 +8,4 @@ p3/b1_sigmoid :: rc=0 at 2026-07-18T13:45:16
 p2/a4_res :: rc=0 at 2026-07-18T16:37:40
 p2/a5 :: rc=0 at 2026-07-18T19:08:33
 p3/b1 arm.name=b1_gain4 arm.attention.kwargs.init_gain=4.0 :: rc=1 at 2026-07-18T19:08:47
+p4/b2 :: rc=0 at 2026-07-18T21:39:26
