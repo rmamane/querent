@@ -4,6 +4,25 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## P3 arbiter — competition exonerated; it's the init scale. Fix implemented, prediction registered.
+
+**`b1_sigmoid`: 61.74% (noise band), mechanism DEAD** — α 0.010–0.017, delta
+ratio 0.0, gates uniform. Non-competitive routing at the same /M init scale
+was refused exactly like softmax routing. **Verdict: the bank's refusal is an
+init-scale bootstrap failure, not a rejection of competition** — the /M
+normalization makes the starting delta ~√M× weaker than A1's, and the
+α-uptake loop (α-grad ∝ ⟨dL/dq, Δq⟩; payload-grad ∝ α) never ignites from a
+doubly-cold start.
+
+**Follow-up implemented on the spot**: `init_gain` knob in `metric_bank`
+(residual mode only; α still starts at exactly 0, so the equivalence contract
+is untouched — 56 tests re-run green). Queued `b1_gain4`
+(init_gain = 4 = √M), which equalizes the init delta with A1's.
+**Registered prediction**: if the scale story is right, b1_gain4's α opens to
+O(0.1+) and routing entropy drops below uniform; if it stays dead, the routed
+bank is structurally disfavored at this scale and the honest headline becomes
+the negative result + the A1-style composition that IS adopted.
+
 ## P3 opener — the headline metric bank was refused; competition-vs-composition sharpens
 
 **`b1_bank` (softmax routing over 16 rank-1 metric bases, residual): 61.70%

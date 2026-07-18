@@ -42,7 +42,8 @@ _PAYLOADS = ("vector", "rank1", "head")
 class _MetricBank(nn.Module):
     def __init__(self, dim: int, grid_size, *, num_latents: int, d_route: int, route: str,
                  topk_k: int, payload: str, head_rank: int | None, pos_prior: bool,
-                 flip_tie: bool, aux_entropy: float, aux_load_balance: float, replace: bool):
+                 flip_tie: bool, aux_entropy: float, aux_load_balance: float, replace: bool,
+                 init_gain: float = 1.0):
         super().__init__()
         M = num_latents
         self.M, self.d_route, self.route_kind, self.k = M, d_route, route, topk_k
@@ -57,23 +58,28 @@ class _MetricBank(nn.Module):
 
         # Payload init: 0.02 in residual mode; replace mode matches vanilla q scale
         # (softmax-uniform a at init => Var(delta entry) = sigma^2-dependent, see module doc).
+        # init_gain (residual only): the /M routing normalization makes the init
+        # delta ~sqrt(M)x weaker than A1's adopted mechanism — screening showed the
+        # alpha bootstrap never ignites (bilinear cold start). gain ~= sqrt(M)
+        # equalizes starting delta magnitude; a pure init-time knob, alpha still 0.
+        g = 1.0 if replace else float(init_gain)
         if payload == "vector":
-            std = 0.02 * math.sqrt(dim * M) if replace else 0.02
+            std = 0.02 * math.sqrt(dim * M) if replace else 0.02 * g
             self.U = nn.Parameter(torch.empty(M, dim))
             nn.init.trunc_normal_(self.U, std=std)
         elif payload == "rank1":
-            std = math.sqrt(0.02 * math.sqrt(M)) if replace else 0.02
+            std = math.sqrt(0.02 * math.sqrt(M)) if replace else 0.02 * math.sqrt(g)
             self.U = nn.Parameter(torch.empty(M, dim))
             self.Vp = nn.Parameter(torch.empty(M, dim))
             nn.init.trunc_normal_(self.U, std=std)
             nn.init.trunc_normal_(self.Vp, std=std)
         else:  # head
             if head_rank is None:
-                std = 0.02 * math.sqrt(M) if replace else 0.02
+                std = 0.02 * math.sqrt(M) if replace else 0.02 * g
                 self.W = nn.Parameter(torch.empty(M, dim, dim))
                 nn.init.trunc_normal_(self.W, std=std)
             else:
-                std = math.sqrt(0.02 * math.sqrt(M / head_rank)) if replace else 0.02
+                std = math.sqrt(0.02 * math.sqrt(M / head_rank)) if replace else 0.02 * math.sqrt(g)
                 self.P = nn.Parameter(torch.empty(M, dim, head_rank))
                 self.Qm = nn.Parameter(torch.empty(M, head_rank, dim))
                 nn.init.trunc_normal_(self.P, std=std)
@@ -125,7 +131,8 @@ class MetricBankDQK(DynamicQKBase):
     def __init__(self, dim, num_heads, grid_size, *, num_latents: int = 16, d_route: int = 64,
                  route: str = "softmax", topk_k: int = 2, payload: str = "rank1",
                  head_rank: int | None = None, pos_prior: bool = False, flip_tie: bool = False,
-                 aux_entropy: float = 0.0, aux_load_balance: float = 0.0, **kw):
+                 aux_entropy: float = 0.0, aux_load_balance: float = 0.0,
+                 init_gain: float = 1.0, **kw):
         if route not in _ROUTES:
             raise ValueError(f"route must be one of {_ROUTES}, got {route!r}")
         if payload not in _PAYLOADS:
@@ -140,7 +147,7 @@ class MetricBankDQK(DynamicQKBase):
                     dim, self.grid_size, num_latents=num_latents, d_route=d_route, route=route,
                     topk_k=topk_k, payload=payload, head_rank=head_rank, pos_prior=pos_prior,
                     flip_tie=flip_tie, aux_entropy=aux_entropy, aux_load_balance=aux_load_balance,
-                    replace=self.mode == "replace",
+                    replace=self.mode == "replace", init_gain=init_gain,
                 )
                 for s in sides
             }
