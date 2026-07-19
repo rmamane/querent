@@ -24,6 +24,10 @@ p5/b3
 # dilution (1/M) is the surviving hypothesis; M=4 is the direct test
 p3/b1_m4
 p0/a0_rope
+# forced-on trials (methodology fix): refused mechanisms trained with alpha
+# FROZEN at 0.3 — 'let the method prove itself' without adoption dynamics
+p3/b1 arm.name=b1_forced +arm.attention.kwargs.alpha_init=0.3 +arm.attention.kwargs.alpha_trainable=false
+p1/a2 arm.name=a2_forced +arm.attention.kwargs.alpha_init=0.3 +arm.attention.kwargs.alpha_trainable=false
 # --- seed-1 pairs pulled forward: a functionally-dead a2 scored +0.52pp, so the
 # --- single-seed noise floor is ~±0.5pp and 1-seed deltas are uninterpretable.
 p0/a0 seed=1

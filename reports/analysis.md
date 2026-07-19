@@ -4,6 +4,31 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## Methodological correction (user challenge): adoption ≠ merit; forced-on trials queued
+
+Standing objection, accepted: the trainable zero-init α is sound *training*
+practice (ReZero/LayerScale/LoRA lineage) and gives the clean equivalence
+start, but treating its final value as the mechanism's quality score
+conflates two claims. "α grew" = the mechanism self-integrates under gradient
+descent (real, useful, but gameable by generic capacity). "α stayed 0" = only
+that this parameterization found no path in — the bilinear cold-start can
+strand a genuinely useful function, so refusals are strong evidence about
+*trainability-as-offered*, weak evidence about *potential value*. Earlier
+"the optimizer votes" framing over-claimed; accuracy pairs remain the only
+promotion currency.
+
+**Fix (implemented + queued):** `alpha_init` / `alpha_trainable` knobs
+(defaults preserve the equivalence contract; 39 tests green). Two forced-on
+trials — the refused mechanisms trained with α FROZEN at 0.3 (the magnitude
+adopted arms typically chose): `b1_forced` (query menu) and `a2_forced`
+(position maps). **Registered predictions:** if a forced trial beats baseline
+beyond the ±0.5 noise band, the knob unfairly penalized that method and the
+refusal was an optimization artifact; if it lands at/below baseline, the
+optimizer's zero was correct-by-revealed-preference and the negative result
+strengthens. Note the replace-mode cells are already forced-on by
+construction — and the one that has run (b2_replace) *proved itself harmful*
+(−0.49), the pattern the knob would have protected against.
+
 ## P4/P5 wrap — breadth complete: asymmetry confirmed, nested-Q alive but pricey
 
 Every phase P0–P5 now has at least its core cells run. Three results in this

@@ -102,6 +102,8 @@ class DynamicQKBase(nn.Module):
         mode: str = "residual",
         has_delta: bool = True,
         alpha_per_head: bool = True,
+        alpha_init: float = 0.0,
+        alpha_trainable: bool = True,
         qk_norm: bool = True,
         qk_norm_eps: float = 1e-6,
         token_temp: bool = False,
@@ -146,12 +148,19 @@ class DynamicQKBase(nn.Module):
             self.q_norm = QKRMSNorm(num_heads, self.head_dim, eps=qk_norm_eps)
             self.k_norm = QKRMSNorm(num_heads, self.head_dim, eps=qk_norm_eps)
 
+        # alpha_init != 0 / alpha_trainable=False are ABLATION knobs ("forced-on"
+        # trials: the mechanism must prove itself without the adoption dynamics).
+        # Defaults preserve the alpha=0 equivalence contract.
         n_alpha = num_heads if alpha_per_head else 1
         if has_delta and mode == "residual":
             if "q" in apply_to:
-                self.alpha_q = nn.Parameter(torch.zeros(n_alpha))
+                self.alpha_q = nn.Parameter(
+                    torch.full((n_alpha,), float(alpha_init)), requires_grad=alpha_trainable
+                )
             if "k" in apply_to:
-                self.alpha_k = nn.Parameter(torch.zeros(n_alpha))
+                self.alpha_k = nn.Parameter(
+                    torch.full((n_alpha,), float(alpha_init)), requires_grad=alpha_trainable
+                )
 
         if token_temp:
             self.w_temp = nn.Parameter(torch.zeros(dim))  # s_i = 1 + tanh(w^T x) = 1 at init
