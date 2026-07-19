@@ -4,6 +4,20 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## The bank negative result is complete: refused five ways, every excuse eliminated
+
+**`b1_m4` (M=4, the gradient-dilution test): DEAD** — α 0.034, routing entropy
+1.386 = log 4 exactly (uniform), delta ratio 1.5e-4, top-1 61.49%. With this,
+the routed query-menu has been refused across **five independent variations**
+— softmax, sigmoid (non-competitive), +positional prior, 4× init scale
+(matched to adopted arms), and a 4-entry menu (concentrated gradient) — and
+each candidate *mechanistic excuse* (competition, init scale, gradient
+dilution) was tested and eliminated. Conclusion as strong as screening can
+make it: at ViT-Ti scale, offered via a trainable gate, the routed-bank form
+is simply not adopted. The forced-on trial (`b1_forced`, α frozen at 0.3,
+queued) delivers the final word on whether it *helps when it cannot be
+refused* — the fair-trial question raised in the methodology note below.
+
 ## Methodological correction (user challenge): adoption ≠ merit; forced-on trials queued
 
 Standing objection, accepted: the trainable zero-init α is sound *training*
