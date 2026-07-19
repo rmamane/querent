@@ -13,3 +13,4 @@ p3/b1 arm.name=b1_gain4 +arm.attention.kwargs.init_gain=4.0 :: rc=0 at 2026-07-1
 p4/b2_replace :: rc=0 at 2026-07-19T02:32:15
 p5/a0_depth13 :: rc=0 at 2026-07-19T04:54:03
 p5/b3 :: rc=0 at 2026-07-19T07:47:41
+p3/b1_m4 :: rc=0 at 2026-07-19T10:14:33
