@@ -4,6 +4,31 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## Program-reframing result — the RoPE control wins the whole grid (+4.40 pp)
+
+**`a0_rope` (2D-RoPE relative positions replacing the learned absolute
+pos-emb; no dynamic anything): 65.80% — +4.40 pp, ~9× the noise floor.** mCA
+55.18 (+5.3 pp) and the best shift agreement (0.796 vs 0.769) — precisely the
+signature relative geometry should produce. The largest effect measured in
+this program came from a *control arm*.
+
+**How this reframes the conclusions:**
+1. The position axis matters enormously — but as *fixed relative geometry in
+   the score function*, not as *learned absolute per-position query maps*.
+   The optimizer refused the learned version (a2) even offered free, while
+   the hand-designed relative version dominates. Sharper, more honest form of
+   the position finding: "spend the position budget on RoPE-style structure,
+   not on per-position adaptivity."
+2. **Every dynamic-query delta so far was measured against a weak positional
+   baseline.** The honest test for the screening winner is now stacked:
+   `a5_rope` (head-remix on the RoPE backbone) queued — does +1.17 survive on
+   a baseline that's 4 pp stronger? Same question eventually for TPA.
+3. Regime caveat, stated up front: 32-px small-data CIFAR is known to flatter
+   strong relative/spatial priors; the RoPE margin should be expected to
+   shrink at ImageNet scale. The *ordering* question (does dynamics add on
+   top of RoPE?) is the transferable part. `a0_rope seed=1` queued (formality
+   at 9× noise, but the program keeps its rules).
+
 ## The bank negative result is complete: refused five ways, every excuse eliminated
 
 **`b1_m4` (M=4, the gradient-dilution test): DEAD** — α 0.034, routing entropy
