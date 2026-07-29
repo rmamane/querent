@@ -4,6 +4,19 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## Fair-trial verdict II — position maps: forced on, still nothing; the position story closes
+
+**`a2_forced` (α frozen 0.3): 61.77%** — inside noise vs baseline and vs
+dead-a2's lucky draw. The sharpest detail: shift-agreement 0.769, *exactly*
+baseline — even forced on, learned per-position query maps confer zero
+translation behavior, while RoPE's fixed relative rotations bought +2.7 pp of
+agreement and +4.4 pp accuracy. Both fair trials now agree with both
+refusals: **nothing the optimizer declined turned out to have hidden value;
+what it embraced (content mechanisms) and what actually moves the needle
+(relative geometry) were never in conflict.** Position's final line for the
+paper: it belongs in the score geometry (RoPE), not in the query projection
+(refused when offered, useless when forced).
+
 ## Fair-trial verdict I — the menu works when forced, and still doesn't help
 
 **`b1_forced` (α frozen 0.3): 61.76% — inside noise vs both baseline (61.40)
