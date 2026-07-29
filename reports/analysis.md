@@ -4,6 +4,25 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## Fair-trial verdict I — the menu works when forced, and still doesn't help
+
+**`b1_forced` (α frozen 0.3): 61.76% — inside noise vs both baseline (61.40)
+and the refused bank (61.70).** The decisive nuance: forced on, the mechanism
+**came alive** — routing entropy 1.32–1.91 (vs 2.77 uniform in every refused
+run), load_max up to 0.27 (specialized latents), delta ratio 12% at L0, and
+the program's only whisper of position-organized routing (MI_norm 0.085 at
+L5). Competitive routing among specialized query-metrics — the original
+headline dream — demonstrably *functions*. It just doesn't improve the model.
+
+Resolution of the registered prediction: the refusal was NOT an optimization
+artifact hiding value (forced ≈ baseline, not above), and it also wasn't
+protecting us from harm (unlike b2_replace, which forced-on *hurt*). The
+knob's blind spot is confirmed in principle (it never discovered a mechanism
+that could function) and acquitted in practice (what it missed was worthless
+here). Final form of the bank negative result: **works as designed; adds
+nothing at this scale.** `a2_forced` (position maps, running) completes the
+fair-trial pair.
+
 ## Program-reframing result — the RoPE control wins the whole grid (+4.40 pp)
 
 **`a0_rope` (2D-RoPE relative positions replacing the learned absolute
