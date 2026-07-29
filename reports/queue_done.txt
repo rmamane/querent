@@ -21,3 +21,4 @@ p0/a0_rope seed=1 :: rc=0 at 2026-07-29T08:44:56
 p2/a5 arm.name=a5_rope +arm.attention.kwargs.rope=true model.pos_emb=none :: rc=0 at 2026-07-29T11:02:13
 p0/a0 seed=1 :: rc=0 at 2026-07-29T12:57:53
 p1/a1 seed=1 :: rc=0 at 2026-07-29T15:02:31
+p1/a2 seed=1 :: rc=0 at 2026-07-29T17:04:38
