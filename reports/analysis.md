@@ -4,7 +4,33 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
-## Fair-trial verdict II — position maps: forced on, still nothing; the position story closes
+## THE COMPOSITION VERDICT — geometry eats dynamics at this scale
+
+**`a5_rope` (head-remix on the RoPE backbone): 65.23% vs a0_rope pair
+65.80/65.39 (mean 65.60) — no additive gain (−0.37, inside noise, nominally
+below), mCA slightly worse (53.6 vs 55.2).** RoPE replicated across seeds
+(+4.2–4.4 pp; solid).
+
+The mechanically fascinating part: the remix is **still adopted** on the RoPE
+backbone (α 0.15–0.23, delta share 10–13%) while contributing nothing —
+adoption≠merit now demonstrated in BOTH directions (refused-but-worthless per
+the fair trials; embraced-but-redundant here). The screening program's
+closing conclusion:
+
+> **At ViT-Ti/CIFAR scale, fixed relative geometry in the score function
+> subsumes the measured gains of every dynamic-query mechanism tested.** The
+> +1.17 pp of the best dynamic mechanism on the weak baseline was, evidently,
+> partial compensation for missing geometry — not value RoPE couldn't provide.
+
+What remains open, honestly: (a) whether this holds at ImageNet scale, where
+the relative-geometry prior is weaker relative to data — exactly the planned
+fleet/P6 confirmation question, now sharpened to "a5_rope vs a0_rope at
+IN-100"; (b) the pending weak-baseline seed pairs (a5 seed=1 queued) for the
+record; (c) the depth-heterogeneity idea (nested mid-layers), untested on the
+RoPE backbone. The paper this data wants to be: *a controlled decomposition
+showing where query adaptivity comes from, that its benefits at small scale
+are largely geometry-compensation, with the adoption-law methodology as the
+reusable contribution.*
 
 **`a2_forced` (α frozen 0.3): 61.77%** — inside noise vs baseline and vs
 dead-a2's lucky draw. The sharpest detail: shift-agreement 0.769, *exactly*
