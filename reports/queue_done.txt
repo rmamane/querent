@@ -16,3 +16,4 @@ p5/b3 :: rc=0 at 2026-07-19T07:47:41
 p3/b1_m4 :: rc=0 at 2026-07-19T10:14:33
 p0/a0_rope :: rc=0 at 2026-07-29T02:46:59
 p3/b1 arm.name=b1_forced +arm.attention.kwargs.alpha_init=0.3 +arm.attention.kwargs.alpha_trainable=false :: rc=0 at 2026-07-29T04:49:57
+p1/a2 arm.name=a2_forced +arm.attention.kwargs.alpha_init=0.3 +arm.attention.kwargs.alpha_trainable=false :: rc=0 at 2026-07-29T06:44:38
