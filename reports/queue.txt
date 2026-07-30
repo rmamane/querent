@@ -44,17 +44,17 @@ p2/a5 seed=1
 p3/b1_sigmoid
 p3/b1_top2
 p3/b1_vector
-p1/a2_flip
-p1/a3_flip
-p4/b2_r4
-p4/b2_k
-p4/b2_qk
-p3/b1_replace
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p1/a2_flip
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p1/a3_flip
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p4/b2_r4
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p4/b2_k
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p4/b2_qk
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p3/b1_replace
 p2/a4_replace
-p0/a0_wide
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p0/a0_wide
 # --- postponed tail (cut if time runs out)
-p3/b1_m64
-p3/b1_headlr
-p2/a4_res_posbias
-p0/a0_th
-p4/b2_mlp
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p3/b1_m64
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p3/b1_headlr
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p2/a4_res_posbias
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p0/a0_th
+# PRUNED 2026-07-30 (cannot change conclusions post-reckoning): p4/b2_mlp
