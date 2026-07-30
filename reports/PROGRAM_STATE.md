@@ -1,4 +1,4 @@
-# PROGRAM STATE — paused 2026-07-19
+# PROGRAM STATE — SCREENING COMPLETE 2026-07-30 (29 cells; see analysis.md for the full arc; fleet/IN-scale question open)
 
 *Snapshot taken when the user paused the autonomous screening program. This file
 is the single re-entry point: it says where everything stands, what the data

@@ -4,6 +4,22 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## PROGRAM COMPLETE — 2026-07-30, 29 cells, final entry
+
+**`a4_replace` (faithful TPA, generated query REPLACES the projection):
+58.71% — 2.69 pp below baseline, worst mCA in the grid (47.9).** The
+forced-on ledger closes symmetric and total: replacement harmful (a4_replace
+−2.7, b2_replace −0.5), frozen-α residuals neutral (b1_forced, a2_forced),
+nothing forced ever helpful. The zero-init residual gate — this codebase's
+core contract — is what made dynamic-query mechanisms trainable at all; the
+published TPA form only survives here through our residual extension.
+
+The runner drained its queue and shut itself down. Final artifacts: this
+file (the full narrative, newest-first), mps_screening.md (auto table),
+PROGRAM_STATE.md (re-entry point), wandb group `mps` (29 runs, all
+diagnostics). The one open question — does any of this flip at ImageNet
+scale — awaits the fleet.
+
 ## Coda — b1_vector: adoption without routing (the third dissociation)
 
 **`b1_vector`: α opened (0.25 at L11) while routing stayed uniform (H 2.770 ≈
