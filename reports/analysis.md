@@ -4,6 +4,35 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## SEED-PAIR RECKONING — the headline does not replicate; the dead arm passes the gate
+
+Full pair block (paired deltas vs same-seed baseline; baseline own spread 0.39pp):
+a5_remix **+1.17 / −0.85** (mean +0.16) · a4_res +0.62/−0.56 (+0.03) ·
+a1 +0.21/−0.11 (+0.05) · a3 +0.46/+0.09 (+0.27) · a2 +0.52/+0.37 (+0.44).
+
+1. **No dynamic-query mechanism replicates.** Every adopted arm's paired mean
+   collapses to ≈0–0.3 with a negative or near-zero worst seed. Combined with
+   the composition verdict (no gain on the RoPE backbone), the constructive
+   claim is now dead on both baselines at this scale.
+2. **The methodological punchline: the only arm passing the formal promotion
+   gate (dmean ≥ +0.4, dmin > 0) is a2 — the mechanistically DEAD arm.** At
+   n=2 with σ≈0.4pp, one such pair among six arms is expected by chance. The
+   gate as written is not decision-grade below 3 seeds or effects ≳ 2σ;
+   recorded as a screening-protocol amendment for any future phase.
+3. **Adopted dynamics look variance-adding, not mean-shifting**: seed spreads
+   of ignited arms (a5 1.63pp, a4 0.79pp) exceed baseline's 0.39pp — n=2,
+   hold lightly, but consistent with extra optimization degrees of freedom
+   buying trajectory diversity rather than accuracy.
+4. `b1_top2`: dead like its siblings (α 0.03, routing entropy = ln 2 exactly —
+   the 2-hot mask's uniform floor). The bank family record is unblemished.
+
+**What the paper is, final form**: a controlled decomposition with a
+measured-noise discipline, an adoption law demonstrated to dissociate from
+merit in both directions, two forced-trial-hardened negative results, and the
+geometry-subsumes-dynamics finding — with one open empirical door (ImageNet
+scale) that the fleet can answer for ~$20. The dynamic-query idea, at small
+scale, is honestly closed.
+
 ## THE COMPOSITION VERDICT — geometry eats dynamics at this scale
 
 **`a5_rope` (head-remix on the RoPE backbone): 65.23% vs a0_rope pair
