@@ -4,6 +4,17 @@
 cite wandb group `mps`; single seed s0, 100-epoch fp32/MPS local recipe —
 paired deltas are the signal, absolute numbers are regime-specific.)*
 
+## Coda — b1_vector: adoption without routing (the third dissociation)
+
+**`b1_vector`: α opened (0.25 at L11) while routing stayed uniform (H 2.770 ≈
+log 16).** With content-independent vector payloads, a uniform route collapses
+to a SINGLE learned constant offset on every query — the network adopted
+generic capacity wearing the bank's clothes, not routing. Third independent
+form of adoption≠merit (refused-but-worthless, embraced-but-redundant, and
+now embraced-but-degenerate); exactly the failure mode the planned
+shuffled-routing controls were designed to expose. Top-1 62.18 (single seed,
+post-reckoning: not interpretable as a gain).
+
 ## SEED-PAIR RECKONING — the headline does not replicate; the dead arm passes the gate
 
 Full pair block (paired deltas vs same-seed baseline; baseline own spread 0.39pp):
